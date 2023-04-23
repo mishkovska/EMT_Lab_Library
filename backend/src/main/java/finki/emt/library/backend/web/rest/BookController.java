@@ -2,14 +2,17 @@ package finki.emt.library.backend.web.rest;
 
 import finki.emt.library.backend.model.Book;
 import finki.emt.library.backend.model.dto.BookDto;
+import finki.emt.library.backend.model.enumerations.BookCategory;
 import finki.emt.library.backend.service.BookService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
@@ -67,6 +70,11 @@ public class BookController {
         return bookService.returnBooks(id, numOfBooksToBeReturned)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
+    }
+
+    @GetMapping("/categories")
+    public List<BookCategory> findAllBookCategories() {
+        return Arrays.asList(BookCategory.values());
     }
 
 }
